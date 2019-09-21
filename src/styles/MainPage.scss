@@ -1,0 +1,13 @@
+.left-side {
+    width: 400px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.right-side {
+    width: calc(100% - 400px);
+    display: inline-block;
+    vertical-align: top;
+    padding: 15px;
+    box-sizing: border-box;
+}

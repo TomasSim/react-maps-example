@@ -1,8 +1,20 @@
 import React from 'react';
-import { Map } from './Map';
+import '../styles/MainPage.scss'
+import { MapContainer } from './MapContainer';
+import { Locations } from './Locations';
 
 export const MainPage = () => {
     return  (
-        <Map />
+        <main>
+
+            <div className="left-side">
+               <Locations />
+            </div>
+
+            <div className="right-side">
+                <MapContainer />
+            </div>
+
+        </main>
     );
 }
