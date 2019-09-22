@@ -1,27 +1,38 @@
-import React from 'react';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
+import React, { useState } from 'react';
+import ReactMapboxGl from 'react-mapbox-gl';
 import '../styles/MapContainer.scss';
+import { MapMarkers } from './MapMarkers';
+import { useDispatch } from 'react-redux';
+import { setStartLocation, showPopUp } from 'store/locationsStore';
+import { MarkerPopUp } from './MarkerPopUp';
 
-export const MapContainer = () => {
-    
+const MapContainer = () => {
+    const dispatch = useDispatch();
+
     const Map = ReactMapboxGl({
         accessToken: 'pk.eyJ1IjoidG9tYXNzaW0iLCJhIjoiY2swdHZ0OTYzMGdhbTNjcDM5ZGx1OWFwMyJ9.gIpOD9QpXAAVy0Cwlph-Iw'
     });
 
-    const pinLocation = (map, event) => {
-        console.log(map, event);
-    };
+    const showMarkerPopUp = (map, event) => {
+        const location = { lat: event.lngLat.lat, lng: event.lngLat.lng };
+        const popUpPostion = { x: event.point.x, y: event.point.y };
+
+        console.log(event);
+        dispatch(showPopUp(popUpPostion, location));
+    }
 
     return (
-        <Map
-        style="mapbox://styles/mapbox/streets-v9"
-        containerStyle={mapStyle}
-        onClick={(map, event) => pinLocation(map, event)}
-        >
-            {/* <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
-                <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
-            </Layer> */}
-        </Map>
+        <section className="map-holder">
+            <Map
+            style="mapbox://styles/mapbox/streets-v9"
+            containerStyle={mapStyle}
+            onClick={(map, event) => showMarkerPopUp(map, event)}
+            >
+                <MapMarkers></MapMarkers>
+            </Map>
+
+            <MarkerPopUp/>
+        </section>
     );
 };
 
@@ -30,3 +41,5 @@ const mapStyle = {
     height: '400px',
     width: '100%'
 }
+
+export default React.memo(MapContainer);
